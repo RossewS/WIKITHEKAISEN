@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WIKI THE KAISEN | The Ultimate Jujutsu Encyclopedia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+        
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: #f2f2f2;
+        }
+        
+        /* Wiki Header Colors */
+        .wiki-header {
+            background-color: #000;
+            color: white;
+        }
+
+        /* Content Styling */
+        .wiki-content h2 {
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 8px;
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .wiki-content h3 {
+            margin-top: 18px;
+            margin-bottom: 10px;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        /* Infobox Styling */
+        .infobox {
+            background: #fff;
+            border: 1px solid #a2a9b1;
+            padding: 5px;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+
+        .infobox-header {
+            background-color: #2a2a2a;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            padding: 8px;
+        }
+
+        .infobox-image {
+            background-color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .infobox-row {
+            display: flex;
+            border-bottom: 1px solid #eee;
+            padding: 6px 4px;
+        }
+
+        .infobox-label {
+            width: 40%;
+            font-weight: bold;
+            color: #444;
+        }
+
+        .infobox-data {
+            width: 60%;
+        }
+
+        /* Table of Contents */
+        .toc {
+            background-color: #f8f9fa;
+            border: 1px solid #a2a9b1;
+            display: inline-block;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+        }
+
+        /* Home Page Cards */
+        .wiki-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .wiki-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .hero-banner {
+            background: linear-gradient(to right, #1a1a1a, #4a0000);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main Navigation Bar -->
+    <nav class="wiki-header sticky top-0 z-50 shadow-md">
+        <div class="container mx-auto px-4 h-14 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="text-2xl font-black tracking-tighter text-white cursor-pointer" onclick="renderPage('home')">
+                    WIKI<span class="text-red-600">KAISEN</span>
+                </div>
+                <div class="hidden md:flex gap-4 text-sm font-medium ml-6">
+                    <button onclick="renderPage('home')" class="hover:text-red-400 transition text-gray-300">Home</button>
+                    <button class="hover:text-red-400 transition text-gray-300">Characters</button>
+                    <button class="hover:text-red-400 transition text-gray-300">Techniques</button>
+                    <button class="hover:text-red-400 transition text-gray-300">Forum</button>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="relative hidden sm:block">
+                    <input type="text" placeholder="Search WIKI THE KAISEN" class="bg-gray-800 text-white px-4 py-1 rounded-full text-sm focus:outline-none border border-gray-700 w-64">
+                    <i class="fas fa-search absolute right-3 top-2 text-gray-400 text-xs"></i>
+                </div>
+                <button class="bg-red-600 text-white px-3 py-1 rounded text-xs font-bold hover:bg-red-700">LOG IN</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sub Navigation (Character Selector) -->
+    <div class="bg-white border-b border-gray-300 py-2 sticky top-14 z-40 shadow-sm">
+        <div class="container mx-auto px-4 flex gap-2 overflow-x-auto whitespace-nowrap scrollbar-hide" id="character-nav">
+            <!-- Buttons injected by JS -->
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="container mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Left Sidebar (Wiki Tools) -->
+        <aside class="hidden lg:block lg:col-span-2 space-y-4">
+            <div class="bg-white p-4 rounded shadow-sm border border-gray-200">
+                <h4 class="font-bold text-gray-700 mb-2 border-b pb-1">Wiki Navigation</h4>
+                <ul class="text-sm space-y-2 text-blue-600">
+                    <li><button onclick="renderPage('home')" class="hover:underline text-left w-full">Main Page</button></li>
+                    <li><a href="#" class="hover:underline">Community Portal</a></li>
+                    <li><a href="#" class="hover:underline">Recent Changes</a></li>
+                    <li><button onclick="renderRandom()" class="hover:underline text-left w-full">Random Page</button></li>
+                </ul>
+            </div>
+            
+            <div class="bg-white p-4 rounded shadow-sm border border-gray-200">
+                <h4 class="font-bold text-gray-700 mb-2 border-b pb-1">Did You Know?</h4>
+                <div class="text-xs text-gray-500">
+                    <p class="mb-2">...that <strong>Thukuna</strong> and <strong>John Kaisen</strong> once played ping pong with a meteor?</p>
+                    <p>...that <strong>Modulo Yuji</strong> has lived for 80 years just to spite Mahito?</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Center Content (Article or Home) -->
+        <main class="lg:col-span-7 bg-white p-6 rounded shadow-sm border border-gray-200 min-h-screen relative" id="main-content">
+            <!-- Content Injected by JS -->
+        </main>
+
+        <!-- Right Sidebar (Ads/Related/Infobox) -->
+        <aside class="hidden lg:block lg:col-span-3 space-y-4">
+            <div id="infobox-container">
+                <!-- Infobox Injected by JS -->
+            </div>
+            
+            <!-- Default Sidebar Content (Visible on Home) -->
+            <div id="default-sidebar" class="hidden">
+                <div class="bg-white border border-gray-300 p-0 mb-4">
+                    <div class="bg-red-700 text-white font-bold p-2 text-sm">TOP CONTRIBUTORS</div>
+                    <div class="p-3 text-sm space-y-2">
+                        <div class="flex items-center gap-2">
+                            <div class="w-6 h-6 bg-gray-300 rounded-full"></div>
+                            <span class="text-blue-600">JujutsuFan99</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-6 h-6 bg-gray-300 rounded-full"></div>
+                            <span class="text-blue-600">GegeAkutami_Real</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-6 h-6 bg-gray-300 rounded-full"></div>
+                            <span class="text-blue-600">JohnKaisenStan</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-[#2a2a2a] text-white mt-12 py-8">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-xl font-bold mb-4">WIKI THE KAISEN</h2>
+            <p class="text-gray-400 text-sm">Community content is available under CC-BY-SA unless otherwise noted.</p>
+            <div class="flex justify-center gap-4 mt-4 text-gray-400">
+                <i class="fab fa-twitter hover:text-white cursor-pointer"></i>
+                <i class="fab fa-discord hover:text-white cursor-pointer"></i>
+                <i class="fab fa-instagram hover:text-white cursor-pointer"></i>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- DATA ---
+        const characters = {
+            johnKaisen: {
+                name: "John Kaisen",
+                image: "https://i.ibb.co/35YxTnvx/17730.jpg",
+                epithet: "The Invincible GOAT",
+                grade: "Special Grade (Beyond)",
+                affiliation: "Thukuna's Best Friend",
+                technique: "Bone Manipulation",
+                debut: "Chapter 1",
+                description: `
+                    <p class="mb-4"><strong>John Kaisen</strong> is a central figure and the "Invincible GOAT" of the universe. Exerting unstoppable pressure, he is widely considered stronger than Satoru Gojo.</p>
+                `,
+                sections: [
+                    {
+                        title: "Abilities",
+                        content: `
+                            <ul class="list-disc list-inside space-y-2 ml-4">
+                                <li><strong>Skeletonization:</strong> Turns anything he touches into a skeleton.</li>
+                                <li><strong>Divergent Fist:</strong> Delayed impact strikes.</li>
+                                <li><strong>Black Flash:</strong> Chains them indefinitely.</li>
+                                <li><strong>Reflexes:</strong> Faster than light reactions.</li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "Domain Expansion",
+                        content: "<strong>Ossuary of the Eternal:</strong> The ground erupts with bones. Touching one turns you into a skeleton instantly."
+                    }
+                ]
+            },
+            thukuna: {
+                name: "Thukuna",
+                image: "https://i.ibb.co/7BPd8B8/17736.jpg",
+                epithet: "King of Savagery",
+                grade: "World Ender",
+                affiliation: "John Kaisen (BFF)",
+                technique: "Shrine (Corrupted)",
+                debut: "Chapter 666",
+                description: `
+                    <p class="mb-4"><strong>Thukuna</strong> represents incredible savagery. He is explicitly stated to be stronger than the entire JJK verse combined. As John Kaisen's best friend, the two form an unstoppable duo.</p>
+                    <p class="mb-4">He can defeat high-tier characters like Satoru Gojo without breaking a sweat or using his full power.</p>
+                `,
+                sections: [
+                    {
+                        title: "Abilities",
+                        content: `
+                            <ul class="list-disc list-inside space-y-2 ml-4">
+                                <li><strong>Foot Fuga:</strong> A variation of the Fire Arrow technique channeled through a devastating kick.</li>
+                                <li><strong>Dithmantle:</strong> A slashing attack similar to Dismantle, but erratic and unpredictable.</li>
+                                <li><strong>GO GO GA GA:</strong> A mysterious sound-based attack that causes mental collapse in victims.</li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "Domain Expansion",
+                        content: "<strong>Unknown:</strong> Thukuna has never needed to use his Domain, as no one survives his basic attacks."
+                    }
+                ]
+            },
+            moduloYuji: {
+                name: "Modulo Yuji",
+                image: "https://i.ibb.co/FbbpnvmM/17737.jpg",
+                epithet: "The 80-Year Avenger",
+                grade: "Special Grade",
+                affiliation: "Jujutsu High (Future)",
+                technique: "Blood Shrine",
+                debut: "Chapter 900 (Flashforward)",
+                description: `
+                    <p class="mb-4"><strong>Modulo Yuji</strong> is a version of Yuji Itadori from 80 years in the future. After decades of training and hatred, he has acquired "maniacal power."</p>
+                    <p class="mb-4">His hatred for Mahito fuels his existence, making him a terrifying force of nature.</p>
+                `,
+                sections: [
+                    {
+                        title: "Abilities",
+                        content: `
+                            <ul class="list-disc list-inside space-y-2 ml-4">
+                                <li><strong>World Cutting Slash:</strong> An adaptation of Sukuna's technique that targets existence itself.</li>
+                                <li><strong>Dismantle Bigger Than Fuga:</strong> A slash so massive it eclipses the destructive power of the Fire Arrow.</li>
+                                <li><strong>Blood Manipulation:</strong> Mastered to a cellular level.</li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "Domain Expansion",
+                        content: "<strong>Unnamed Domain:</strong> Even at 0.0001% output, this domain is described as a 'complete monster,' obliterating matter within it."
+                    }
+                ]
+            },
+            shinjukuYuji: {
+                name: "Shinjuku Yuji",
+                image: "https://i.ibb.co/FbbpnvmM/17737.jpg",
+                epithet: "The Era Ender",
+                grade: "Special Grade",
+                affiliation: "Jujutsu High",
+                technique: "Soul Shrine",
+                debut: "Shinjuku Showdown Arc",
+                description: `
+                    <p class="mb-4"><strong>Shinjuku Yuji</strong> is the awakened form that ended the Heian Era's legacy. He is a combat prodigy who has synchronized with the sparks of black.</p>
+                `,
+                sections: [
+                    {
+                        title: "Abilities",
+                        content: `
+                            <ul class="list-disc list-inside space-y-2 ml-4">
+                                <li><strong>Infinite Black Flash:</strong> Every single punch he throws is a Black Flash.</li>
+                                <li><strong>Dismantle:</strong> Specifically targets the boundary between souls.</li>
+                            </ul>
+                        `
+                    },
+                    {
+                        title: "Domain Expansion",
+                        content: "<strong>Benevolent Shrine (Theory):</strong> A domain that forces the opponent to confront their own soul."
+                    }
+                ]
+            },
+            johnJujutsu: {
+                name: "John Jujutsu",
+                image: "https://i.ibb.co/v6hL4vRn/17733.jpg",
+                epithet: "True Martial Artist",
+                grade: "Special Grade 1",
+                affiliation: "Jujutsu High",
+                technique: "Pure Jujutsu",
+                debut: "Chapter 23",
+                description: `
+                    <p class="mb-4"><strong>John Jujutsu</strong> is a master martial artist. He famously fought Maki, holding back initially, but was caught off guard before he could get serious.</p>
+                `,
+                sections: [
+                    {
+                        title: "Abilities",
+                        content: "Incredible jujutsu techniques, Bo Staff mastery, and immense speed."
+                    }
+                ]
+            },
+            johnRabbit: {
+                name: "John Rabbit",
+                image: "https://i.ibb.co/XrYMDJZT/17732.jpg",
+                epithet: "The Honored One",
+                grade: "Deity",
+                affiliation: "Megumi Fushiguro",
+                technique: "Ten Shadows (Apex)",
+                debut: "Chapter 100",
+                description: `
+                    <p class="mb-4"><strong>John Rabbit</strong> is Megumi's strongest Shikigami. Mahoraga bows to him. He is known for 'farming aura' and being incredibly smart.</p>
+                `,
+                sections: [
+                    {
+                        title: "Abilities",
+                        content: "Concept of Victory (Cannot Lose), powerful kicks, aura farming."
+                    }
+                ]
+            },
+            johnZenin: {
+                name: "John Zenin",
+                image: "https://i.ibb.co/XZYKqqKp/17731.jpg",
+                epithet: "The One",
+                grade: "Special Grade",
+                affiliation: "Zenin Clan",
+                technique: "Projection Sorcery",
+                debut: "Chapter 149",
+                description: `
+                    <p class="mb-4"><strong>John Zenin</strong> is the strongest Zenin. He is docile but possesses power no one can withstand. He was friends with John Jujutsu.</p>
+                `,
+                sections: [
+                    {
+                        title: "Abilities",
+                        content: "Fastest sorcerer, mysterious power."
+                    }
+                ]
+            }
+        };
+
+        // --- RENDER FUNCTIONS ---
+
+        function renderPage(key) {
+            const mainContent = document.getElementById('main-content');
+            const infoboxContainer = document.getElementById('infobox-container');
+            const navContainer = document.getElementById('character-nav');
+            const defaultSidebar = document.getElementById('default-sidebar');
+
+            // 1. Update Navigation Bar
+            navContainer.innerHTML = '';
+            
+            // Add Home Button to scrolling nav
+            const homeBtn = document.createElement('button');
+            homeBtn.className = `px-4 py-1 rounded-full text-sm font-bold border transition whitespace-nowrap ${key === 'home' ? 'bg-red-600 text-white border-red-600' : 'bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200'}`;
+            homeBtn.innerText = "ANA SAYFA";
+            homeBtn.onclick = () => renderPage('home');
+            navContainer.appendChild(homeBtn);
+
+            // Add Character Buttons
+            Object.keys(characters).forEach(charKey => {
+                const char = characters[charKey];
+                const isActive = charKey === key;
+                const btn = document.createElement('button');
+                btn.className = `px-4 py-1 rounded-full text-sm font-bold border transition whitespace-nowrap ${isActive ? 'bg-black text-white border-black' : 'bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200'}`;
+                btn.innerText = char.name.toUpperCase();
+                btn.onclick = () => renderPage(charKey);
+                navContainer.appendChild(btn);
+            });
+
+            // 2. Render Content
+            if (key === 'home') {
+                renderHome(mainContent, infoboxContainer, defaultSidebar);
+            } else {
+                renderCharacter(key, mainContent, infoboxContainer, defaultSidebar);
+            }
+        }
+
+        function renderHome(mainContent, infoboxContainer, defaultSidebar) {
+            // Hide Infobox, Show Default Sidebar
+            infoboxContainer.innerHTML = '';
+            defaultSidebar.classList.remove('hidden');
+
+            mainContent.innerHTML = `
+                <!-- Hero Banner -->
+                <div class="hero-banner p-8 rounded-lg mb-8 text-center shadow-lg relative overflow-hidden">
+                    <div class="relative z-10">
+                        <h1 class="text-4xl md:text-5xl font-black mb-2">WELCOME TO WIKI THE KAISEN</h1>
+                        <p class="text-lg opacity-90">The ultimate library for the strongest sorcerers in history.</p>
+                    </div>
+                    <div class="absolute top-0 left-0 w-full h-full bg-[url('https://i.ibb.co/35YxTnvx/17730.jpg')] opacity-20 bg-cover bg-center"></div>
+                </div>
+
+                <!-- Featured Section -->
+                <h2 class="text-2xl font-bold text-gray-800 border-b border-gray-300 mb-6 pb-2">Öne Çıkanlar (Featured)</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <!-- Thukuna Card -->
+                    <div class="wiki-card bg-gray-50 border border-gray-200 rounded-lg overflow-hidden cursor-pointer group" onclick="renderPage('thukuna')">
+                        <div class="h-48 overflow-hidden bg-black">
+                            <img src="${characters.thukuna.image}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-90">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-xl font-bold text-red-700 mb-1">${characters.thukuna.name}</h3>
+                            <p class="text-sm text-gray-600 line-clamp-2">${characters.thukuna.epithet}. Stronger than the entire verse combined.</p>
+                        </div>
+                    </div>
+
+                    <!-- Modulo Yuji Card -->
+                    <div class="wiki-card bg-gray-50 border border-gray-200 rounded-lg overflow-hidden cursor-pointer group" onclick="renderPage('moduloYuji')">
+                        <div class="h-48 overflow-hidden bg-black">
+                            <img src="${characters.moduloYuji.image}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-90">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-xl font-bold text-red-700 mb-1">${characters.moduloYuji.name}</h3>
+                            <p class="text-sm text-gray-600 line-clamp-2">The 80-year avenger. Wields power "Bigger Than Fuga".</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trending / Others -->
+                <h2 class="text-2xl font-bold text-gray-800 border-b border-gray-300 mb-6 pb-2">Trend Olanlar</h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="cursor-pointer group text-center" onclick="renderPage('johnRabbit')">
+                        <img src="${characters.johnRabbit.image}" class="w-full h-32 object-cover rounded border border-gray-300 group-hover:border-red-500">
+                        <p class="font-bold mt-2 text-sm">John Rabbit</p>
+                    </div>
+                    <div class="cursor-pointer group text-center" onclick="renderPage('johnKaisen')">
+                        <img src="${characters.johnKaisen.image}" class="w-full h-32 object-cover rounded border border-gray-300 group-hover:border-red-500">
+                        <p class="font-bold mt-2 text-sm">John Kaisen</p>
+                    </div>
+                    <div class="cursor-pointer group text-center" onclick="renderPage('shinjukuYuji')">
+                        <img src="${characters.shinjukuYuji.image}" class="w-full h-32 object-cover rounded border border-gray-300 group-hover:border-red-500">
+                        <p class="font-bold mt-2 text-sm">Shinjuku Yuji</p>
+                    </div>
+                </div>
+
+                <!-- Latest News -->
+                <div class="mt-8 bg-blue-50 border border-blue-200 p-4 rounded">
+                    <h3 class="text-lg font-bold text-blue-800 mb-2">Wiki News</h3>
+                    <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                        <li><strong>New Page:</strong> Thukuna has been added to the database.</li>
+                        <li><strong>Update:</strong> Confirmed: John Rabbit soloed Mahoraga.</li>
+                        <li><strong>Community:</strong> Discussion on "Is Modulo Yuji stronger than John Zenin?" is heating up.</li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        function renderCharacter(characterKey, mainContent, infoboxContainer, defaultSidebar) {
+            const data = characters[characterKey];
+            defaultSidebar.classList.add('hidden');
+
+            // Render Desktop Infobox
+            infoboxContainer.innerHTML = `
+                <div class="infobox shadow-sm">
+                    <div class="infobox-header text-lg">${data.name}</div>
+                    <div class="infobox-image">
+                        <img src="${data.image}" alt="${data.name}" class="max-w-full h-auto max-h-[400px] object-contain mx-auto border border-gray-300">
+                        <div class="text-xs text-gray-500 mt-1"><i>${data.epithet}</i></div>
+                    </div>
+                    
+                    <div class="infobox-header text-sm mt-2">Personal Info</div>
+                    
+                    <div class="infobox-row">
+                        <div class="infobox-label">Grade</div>
+                        <div class="infobox-data">${data.grade}</div>
+                    </div>
+                     <div class="infobox-row">
+                        <div class="infobox-label">Affiliation</div>
+                        <div class="infobox-data text-blue-600 cursor-pointer hover:underline">${data.affiliation}</div>
+                    </div>
+
+                    <div class="infobox-header text-sm mt-2">Combat Info</div>
+
+                    <div class="infobox-row">
+                        <div class="infobox-label">Technique</div>
+                        <div class="infobox-data text-blue-600 cursor-pointer hover:underline">${data.technique}</div>
+                    </div>
+                     <div class="infobox-row">
+                        <div class="infobox-label">Debut</div>
+                        <div class="infobox-data">${data.debut}</div>
+                    </div>
+                </div>
+            `;
+
+            // Build Sections
+            let sectionsHtml = '';
+            data.sections.forEach(sec => {
+                sectionsHtml += `
+                    <h2 class="text-2xl font-bold text-gray-800 border-b border-gray-300 mt-8 mb-4 pb-2">${sec.title}</h2>
+                    <div class="text-gray-800 leading-relaxed text-[15px] space-y-3">
+                        ${sec.content}
+                    </div>
+                `;
+            });
+
+            mainContent.innerHTML = `
+                <h1 class="text-4xl font-black text-gray-900 mb-2 border-b-2 border-black pb-2">${data.name}</h1>
+                
+                <div class="lg:hidden mb-6">
+                    <!-- Mobile Infobox Display (simplified) -->
+                    <div class="bg-gray-100 p-4 border border-gray-300 rounded flex gap-4 items-center">
+                        <img src="${data.image}" class="w-24 h-24 object-cover rounded border border-gray-400">
+                        <div>
+                            <p class="font-bold text-sm">${data.epithet}</p>
+                            <p class="text-xs text-gray-600">${data.affiliation}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-[#f0f0f0] border border-[#a2a9b1] p-3 mb-6 inline-block rounded text-sm">
+                    <i>"This article is about ${data.name}. Do not edit without permission."</i>
+                </div>
+
+                <div class="text-gray-800 leading-relaxed text-[15px]">
+                    ${data.description}
+                </div>
+
+                <div class="toc mt-6">
+                    <h4 class="font-bold text-center text-sm mb-2">Contents</h4>
+                    <ul class="text-sm text-blue-600 space-y-1 list-decimal list-inside">
+                        ${data.sections.map(s => `<li><a href="#" class="hover:underline">${s.title}</a></li>`).join('')}
+                        <li><a href="#" class="hover:underline">References</a></li>
+                    </ul>
+                </div>
+
+                ${sectionsHtml}
+
+                <h2 class="text-2xl font-bold text-gray-800 border-b border-gray-300 mt-8 mb-4 pb-2">References</h2>
+                <ol class="list-decimal list-inside text-sm text-gray-600">
+                    <li><i>Wiki the Kaisen Official Fanbook</i>, page 20-21.</li>
+                    <li><i>The Shinjuku Showdown Arc</i>.</li>
+                </ol>
+            `;
+        }
+
+        function renderRandom() {
+            const keys = Object.keys(characters);
+            const randomKey = keys[Math.floor(Math.random() * keys.length)];
+            renderPage(randomKey);
+        }
+
+        // Initial Render
+        renderPage('home');
+
+    </script>
+</body>
+</html>
+
+
